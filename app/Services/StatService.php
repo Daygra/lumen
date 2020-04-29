@@ -4,7 +4,6 @@
 namespace App\Services;
 
 
-use App\Models\Countries;
 use App\Models\CovidStat;
 use App\Repositories\StatRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
@@ -48,8 +47,14 @@ class StatService implements StatServiceInterface
         return $this->statRepository->getCountries();
     }
 
-    public function showStatList($stat)
+    public function StatList($stat)
     {
-
+      return [
+            'country' => $stat->countries->name,
+            'ill' => $stat->ill_num,
+            'dead' => $stat->dead_num,
+            'good' => $stat->good_num,
+            'updated_at' => date('H:i:s d.m.Y', strtotime($stat->updated_at))
+        ];
     }
 }

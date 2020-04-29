@@ -5,14 +5,14 @@ namespace App\Models;
 
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Countries extends Model
 {
     protected $table='countries';
     protected $fillable=['name'];
-    public function stats() :HasMany
+    public function stats() :HasOne
     {
-        return $this->hasMany(CovidStat::class);
+        return $this->hasOne(CovidStat::class);
     }
 }

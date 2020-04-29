@@ -26,17 +26,8 @@ class CovidCountryStat extends Command
         $countriesList=$this->statService->getCountries()->pluck('name','id')->toArray();
         $country_id=array_search($this->choice('choice_country',array_values($countriesList)),$countriesList);
         $stat=$this->statService->getByCountry($country_id);
-        $data[] = [
-            'country' => $stat->countries->name,
-            'ill' => $stat->ill_num,
-            'dead' => $stat->dead_num,
-            'good' => $stat->good_num,
-            'updated_at' => date('H:i:s d.m.Y', strtotime($stat->updated_at))
-        ];
-        $this->table(
-            ['Country name', 'Ill', 'Dead', 'Good', 'Updated'],
-            $data
-        );
+        $data[]=$this->statService->StatList($stat);
+        $this->table(array_keys($data[0]), $data);
         return 0;
     }
 }

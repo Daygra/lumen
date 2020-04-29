@@ -24,18 +24,9 @@ class CovidList extends Command
     {
         $stats=$this->statService->list();
         foreach ($stats as $stat) {
-            $data[] = [
-                'country' => $stat->countries->name,
-                'ill' => $stat->ill_num,
-                'dead' => $stat->dead_num,
-                'good' => $stat->good_num,
-                'updated_at' => date('H:i:s d.m.Y', strtotime($stat->updated_at))
-            ];
+            $data[]=$this->statService->StatList($stat);
         }
-        $this->table(
-            ['Country name', 'Ill', 'Dead', 'Good', 'Updated'],
-            $data
-        );
+        $this->table(array_keys($data[0]), $data);
         return 0;
     }
 

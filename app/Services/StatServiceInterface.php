@@ -15,5 +15,5 @@ interface StatServiceInterface
     public function delete(int $id):void ;
     public function getByCountry(int $countryId):?CovidStat;
     public function getCountries(): ?Collection;
-    public function showStatList($stat);
+    public function StatList($stat);
 }

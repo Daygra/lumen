@@ -7,6 +7,7 @@ namespace App\Repositories;
 use App\Models\Countries;
 use App\Models\CovidStat;
 use Illuminate\Database\Eloquent\Collection;
+use mysql_xdevapi\Exception;
 
 class StatRepository implements StatRepositoryInterface
 {
@@ -25,7 +26,7 @@ class StatRepository implements StatRepositoryInterface
         if(!$country){
             throw new \InvalidArgumentException('Country does not exists');
         }
-        if( !($country->stats()->get()->isEmpty())&&$stat == NULL) {
+        if(!($country->stats()->get()->isEmpty())&&$stat == NULL) {
             throw new \InvalidArgumentException('Country covid data exists, try to use "covid:update"');
         }
         !is_null($stat)?:$stat = new CovidStat();
@@ -44,7 +45,11 @@ class StatRepository implements StatRepositoryInterface
 
     public function getStatByCountryId(int $id):?CovidStat
     {
-        return $this->covidStat->where('countries_id', '=', $id)->first();
+            $stat=$this->covidStat->where('countries_id', '=', $id)->first();
+            if (is_null($stat))
+                throw new \InvalidArgumentException('Country covid data isnt exists, try to use "covid:add"');
+            return $stat;
+
     }
 
     public function getCountries(): Collection
